@@ -1,0 +1,113 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2014-05-26, 13:03:16
+    Author     : michal
+*/
+
+.stv-list .stv-list {
+    padding-left: 16px;
+}
+
+.stv-list {
+    display: block;
+    list-style: none outside none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.stv-list > li {
+    display: block;
+    font-size: 13px;
+    line-height: 20px;
+    margin: 0;
+    min-height: 20px;
+    padding: 0;
+    position: relative;
+}
+
+.stv-list .stv-list > li {
+    padding-left: 15px;
+}
+
+.stv-item {
+    background: none repeat scroll 0 0 #FBFBFB;
+    border: 1px solid #CFCFCF;
+    color: #333333;
+    display: block;
+    font-size: 15px;
+    margin: 5px 0;
+    /*padding: 7px 15px;*/
+    text-decoration: none;
+}
+
+
+ul.stv-list ul li:before {
+    border-top: 1px solid #000;
+    content: "";
+    display: block;
+    left: 0px;
+    position: absolute;
+    top: 16px;
+    width: 8px;
+    z-index: 1;
+}
+
+ul.stv-list > li > ul:before {
+    border-left: 1px solid #7A7A7A;
+    bottom: 0;
+    content: "";
+    display: block;
+    left: 15px;
+    position: absolute;
+    top: 0;
+    z-index: 1;
+}
+
+.stv-item > i.toggle {
+    border-right: 1px solid #CFCFCF;
+    cursor: pointer;
+    display: table-cell;
+    padding: 6px 10px;
+
+}
+
+.stv-item > span.title {
+    display: table-cell;
+    padding: 6px 15px;
+    width: 100%;
+}
+
+
+.stv-item > .right-control {
+    border-left: 1px solid #CFCFCF;
+    cursor: pointer;
+    display: table-cell;
+    float: none !important;
+    min-height: 1em;
+    padding: 6px 10px;
+}
+
+.stv-item > .right-control:empty {
+    display: none;
+}
+
+.stv-item:hover, .stv-item:hover + .stv-list .stv-item {
+    background: none repeat scroll 0 0 #FDDFB3 !important;
+    border: 1px solid #FAA937;
+    color: #333333 !important;
+}
+
+.stv-item:hover > i.toggle, .stv-item:hover + .stv-list .stv-item > i.toggle{
+    border-right: 1px solid #FAA937;
+
+}
+
+
+.stv-item:hover > .right-control, .stv-item:hover + .stv-list .stv-item > .right-control {
+    border-left: 1px solid #FAA937;
+}
