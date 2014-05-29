@@ -44,8 +44,6 @@ class SimpleTreeView extends CWidget
             if (isset($item['items']) && !empty($item['items']))
                 $icon = $this->toggleIconHtml;
             
-            $label = '<span class="title">'.$item['label']. '</span>';
-
             $rightControl = '';
             if (isset($item['rightControl'])) {
                 $rightControl = $item['rightControl'];
@@ -54,7 +52,7 @@ class SimpleTreeView extends CWidget
             
             echo CHtml::tag($this->itemHtmlTag, $itemHtmlOptions, strtr($this->itemTemplate, array(
                 '{icon}'            => $icon,
-                '{label}'           => $label,
+                '{label}'           => $item['label'],
                 '{rightControl}'    => $rightControl,
             )));
 
