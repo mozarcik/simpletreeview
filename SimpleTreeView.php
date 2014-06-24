@@ -83,16 +83,12 @@ class SimpleTreeView extends CWidget
             if (isset($item['items']) && !empty($item['items']))
                 $icon = $this->toggleIconHtml;
             
-            $rightControl = '';
-            if (isset($item['rightControl'])) {
-                $rightControl = $item['rightControl'];
-            }
             $itemHtmlOptions = array('class' => 'stv-item');
             
             echo CHtml::tag($this->itemHtmlTag, $itemHtmlOptions, strtr($this->itemTemplate, array(
                 '{icon}'            => $icon,
                 '{label}'           => $item['label'],
-                '{rightControl}'    => $rightControl,
+                '{rightControl}'    => isset($item['rightControl']) ? $item['rightControl'] : null,
             )));
 
             if (isset($item['items']) && !empty($item['items']))
@@ -190,5 +186,39 @@ class SimpleTreeView extends CWidget
             $this->_buttonJs[] = "jQuery(document).on('click','#{$options['id']}', $function);";
         }
     }
+
+	/**
+	 * Fetches a flat list from the DB and puts it into a tree-like array.
+	 */
+	public static function arrayToTree($data, $primaryKey = 'id', $parentKey = 'parent_id', $labelKey = 'name') {
+		$flat = array();
+		$top = array();
+		foreach($data as $item) {
+            if (is_object($item)) {
+                $primary_key = $item->{$primaryKey};
+                $parent_key = $item->{$parentKey};
+                $label = $item->{$labelKey};
+            } elseif (is_array($item)) {
+                $primary_key = $item[$primaryKey];
+                $parent_key = $item[$parentKey];
+                $label = $item[$labelKey];
+            } else {
+                throw new CException('Unsupported item passed to Simple Tree View widget.');
+            }
+			$flat[$primary_key] = array(
+				'label'=>$label,
+                'item'=>$item,
+				'items'=>array(),
+				'parent'=>null,
+			);
+			if ($parent_key !== null) {
+				$flat[$parent_key]['items'][$primary_key] = &$flat[$primary_key];
+				$flat[$primary_key]['parent'] = &$flat[$parent_key];
+			} else {
+				$top[$primary_key] = &$flat[$primary_key];
+			}
+		}
+		return $top;
+	}
 }
 
