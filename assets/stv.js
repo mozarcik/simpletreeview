@@ -42,7 +42,6 @@
             event.stopPropagation();
         },
         toggleAll: function(show) {
-            console.info('toggle');
             $('ul', this).toggle(show);
             $('.toggle', this)
                 .toggleClass('fa-expand-o', !show)
