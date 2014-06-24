@@ -3,7 +3,14 @@
 
     var _defaults = {};
     var _dataKey = 'simpleTreeView';
-    
+    var _searchTimeout;
+
+    //case insensitive :contains selector
+    jQuery.expr[':'].containsCI = function(a, i, m) {
+      return jQuery(a).text().toLowerCase()
+          .indexOf(m[3].toLowerCase()) >= 0;
+    };
+
     $.fn.simpleTreeView = function(method) {
         if ( _methods[method] ) {
 			return _methods[ method ].apply( this, arguments);
@@ -14,12 +21,25 @@
 		}               
     };
 
-
     function SimpleTreeView(element, settings) {
         var _settings = settings;
         var _element = element;
 
         $('.stv-item > i.toggle', _element).click(_methods.toggleBranch);
+
+        if (_settings.searchInput) {
+            var prevSearchText = '';
+            $(_settings.searchInput).on('keyup', function(e) {
+                var searchText = $.trim($(this).val());
+                if (prevSearchText !== searchText) {
+                    prevSearchText = searchText;
+                    clearTimeout(_searchTimeout);
+                    _searchTimeout = setTimeout(function(){
+                        _methods.searchTree.apply( _element, [searchText] );
+                    }, 200);
+                }
+            });
+        }
     };
 
     var _methods = {
@@ -49,7 +69,22 @@
             return this;
         },
         collapseAll: function() { return _methods.toggleAll.apply(this, [false]); },
-        expandAll: function() { return _methods.toggleAll.apply(this, [true]); }
+        expandAll: function() { return _methods.toggleAll.apply(this, [true]); },
+        searchTree: function(searchText) {
+            $(this).simpleTreeView('collapseAll');
+            if (searchText === '') {
+                $('li', this).show();
+            } else {
+                $('li', this).hide();
+                $('ul', this).hide();
+                $(':containsCI(\''+searchText+'\')', this).parents('li').show().each(function(){
+                    $('.toggle', $(this).children('.stv-item'))
+                        .toggleClass('fa-expand-o', false)
+                        .toggleClass('fa-collapse-o', true);
+                });
+                $(':containsCI(\''+searchText+'\')', this).parents('ul').show();
+            }
+        }
     };
 }( jQuery ));
 
