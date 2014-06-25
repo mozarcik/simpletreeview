@@ -137,13 +137,13 @@ class SimpleTreeView extends CWidget
                 'label' => Yii::t('app', 'Collapse all'),
                 'url' => '#',
                 'options' => array('id' => 'collapse-all', 'class' => 'btn btn-default'),
-                'click' => "js:function(){ $('#$this->id').simpleTreeView('collapseAll');}",
+                'click' => "js:function(){ $('#$this->id').simpleTreeView('collapseAll'); return false; }",
             ),
             'expand' => array(
                 'label' => Yii::t('app', 'Expand all'),
                 'url' => '#',
                 'options' => array('id' => 'expand-all', 'class' => 'btn btn-default'),
-                'click' => "js:function(){ $('#$this->id').simpleTreeView('expandAll');}",
+                'click' => "js:function(){ $('#$this->id').simpleTreeView('expandAll'); return false; }",
             ),
         ), $this->toolbarButtons);
 
