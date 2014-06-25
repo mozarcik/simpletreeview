@@ -190,7 +190,7 @@ class SimpleTreeView extends CWidget
 	/**
 	 * Fetches a flat list from the DB and puts it into a tree-like array.
 	 */
-	public static function arrayToTree($data, $primaryKey = 'id', $parentKey = 'parent_id', $labelKey = 'name') {
+	public static function arrayToTree($data, $primaryKey = 'id', $parentKey = 'parent_id', $labelKey = 'name', $rightControlCallback = null) {
 		$flat = array();
 		$top = array();
 		foreach($data as $item) {
@@ -206,10 +206,11 @@ class SimpleTreeView extends CWidget
                 throw new CException('Unsupported item passed to Simple Tree View widget.');
             }
 			$flat[$primary_key] = array(
-				'label'=>$label,
-                'item'=>$item,
-				'items'=>array(),
-				'parent'=>null,
+				'label' => $label,
+                'item'  => $item,
+				'items' => array(),
+				'parent'=> null,
+                'rightControl' => $rightControlCallback === null ? null : call_user_func($rightControlCallback, $item),
 			);
 			if ($parent_key !== null) {
 				$flat[$parent_key]['items'][$primary_key] = &$flat[$primary_key];
