@@ -41,6 +41,8 @@ class SimpleTreeView extends CWidget
     /**
      * JavaScript options for widget. Known options:
      *  * searchInput - search input selector for tree searching
+     *  * expandIcon - CSS class used as the expand icon
+     *  * collapseIcon - CSS class used as the collapse icon
      *
      * @var array
      */

@@ -1,7 +1,10 @@
 (function( $, undefined ) {
 	"use strict";
 
-    var _defaults = {};
+    var _defaults = {
+        'expandIcon': 'fa-expand-o',
+        'collapseIcon': 'fa-collapse-o',
+    };
     var _dataKey = 'simpleTreeView';
     var _searchTimeout;
 
@@ -40,6 +43,8 @@
                 }
             });
         }
+
+        return _settings;
     };
 
     var _methods = {
@@ -53,24 +58,35 @@
             });
             return this;
         },
-        destroy: function() {$.removeData(this, _dataKey); return this;},
+        destroy: function() {
+            $.removeData(this, _dataKey);
+            return this;
+        },
         toggleBranch: function(event) {
-
+            var settings = $(this).parents('ul.stv-list:first').data(_dataKey);
             var item = $(event.target).closest('li');
             $(item).children('ul').toggle();
-            $(event.target).toggleClass('fa-collapse-o').toggleClass('fa-expand-o');
+            $(event.target)
+                .toggleClass(settings.collapseIcon)
+                .toggleClass(settings.expandIcon);
             event.stopPropagation();
         },
         toggleAll: function(show) {
+            var settings = $(this).data(_dataKey);
             $('ul', this).toggle(show);
             $('.toggle', this)
-                .toggleClass('fa-expand-o', !show)
-                .toggleClass('fa-collapse-o', show);
+                .toggleClass(settings.expandIcon, !show)
+                .toggleClass(settings.collapseIcon, show);
             return this;
         },
-        collapseAll: function() { return _methods.toggleAll.apply(this, [false]); },
-        expandAll: function() { return _methods.toggleAll.apply(this, [true]); },
+        collapseAll: function() {
+            return _methods.toggleAll.apply(this, [false]);
+        },
+        expandAll: function() {
+            return _methods.toggleAll.apply(this, [true]);
+        },
         searchTree: function(searchText) {
+            var settings = $(this).data(_dataKey);
             $(this).simpleTreeView('collapseAll');
             if (searchText === '') {
                 $('li', this).show();
@@ -79,8 +95,8 @@
                 $('ul', this).hide();
                 $(':containsCI(\''+searchText+'\')', this).parents('li').show().each(function(){
                     $('.toggle', $(this).children('.stv-item'))
-                        .toggleClass('fa-expand-o', false)
-                        .toggleClass('fa-collapse-o', true);
+                        .toggleClass(settings.expandIcon, false)
+                        .toggleClass(settings.collapseIcon, true);
                 });
                 $(':containsCI(\''+searchText+'\')', this).parents('ul').show();
             }
