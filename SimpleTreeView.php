@@ -214,13 +214,23 @@ class SimpleTreeView extends CWidget
 				'parent'=> null,
                 'rightControl' => $rightControlCallback === null ? null : call_user_func($rightControlCallback, $item),
 			);
+		}
+        // do a second pass because $data may not be sorted
+		foreach($data as $item) {
+            if (is_object($item)) {
+                $primary_key = $item->{$primaryKey};
+                $parent_key = $item->{$parentKey};
+            } elseif (is_array($item)) {
+                $primary_key = $item[$primaryKey];
+                $parent_key = $item[$parentKey];
+            }
 			if ($parent_key !== null) {
 				$flat[$parent_key]['items'][$primary_key] = &$flat[$primary_key];
 				$flat[$primary_key]['parent'] = &$flat[$parent_key];
 			} else {
 				$top[$primary_key] = &$flat[$primary_key];
 			}
-		}
+        }
 		return $top;
 	}
 }
