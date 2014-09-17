@@ -63,7 +63,7 @@
             return this;
         },
         toggleBranch: function(event) {
-            var settings = $(this).parents('ul.stv-list:first').data(_dataKey);
+            var settings = $(this).parents('ul.stv-list:last').data(_dataKey);
             var item = $(event.target).closest('li');
             $(item).children('ul').toggle();
             $(event.target)
