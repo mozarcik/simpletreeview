@@ -84,12 +84,13 @@ class SimpleTreeView extends CWidget
             $icon = '';
             if (isset($item['items']) && !empty($item['items']))
                 $icon = $this->toggleIconHtml;
-            
+
             $itemHtmlOptions = array('class' => 'stv-item');
-            
+
             echo CHtml::tag($this->itemHtmlTag, $itemHtmlOptions, strtr($this->itemTemplate, array(
                 '{icon}'            => $icon,
                 '{label}'           => $item['label'],
+                '{link}'            => CHtml::link($item['label'], $item['url'], isset($item['linkOptions']) ? $item['linkOptions'] : array()),
                 '{rightControl}'    => isset($item['rightControl']) ? $item['rightControl'] : null,
             )));
 
