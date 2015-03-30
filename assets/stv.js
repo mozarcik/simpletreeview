@@ -2,8 +2,9 @@
 	"use strict";
 
     var _defaults = {
-        'expandIcon': 'fa-expand-o',
-        'collapseIcon': 'fa-collapse-o',
+        expandIcon: 'fa-expand-o',
+        collapseIcon: 'fa-collapse-o',
+        animateToggleBranch: false
     };
     var _dataKey = 'simpleTreeView';
     var _searchTimeout;
@@ -65,7 +66,11 @@
         toggleBranch: function(event) {
             var settings = $(this).parents('ul.stv-list:last').data(_dataKey);
             var item = $(event.target).closest('li');
-            $(item).children('ul').toggle();
+            if (settings.animateToggleBranch)
+                $(item).children('ul').slideToggle();
+            else
+                $(item).children('ul').toggle();
+
             $(event.target)
                 .toggleClass(settings.collapseIcon)
                 .toggleClass(settings.expandIcon);
